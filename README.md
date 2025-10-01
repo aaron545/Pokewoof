@@ -1,0 +1,2 @@
+# Pokewoof
+play pokemon bot
