@@ -100,6 +100,7 @@ async function catchPokemon(message, rarity, streak) {
   } else {
     bIndex = buttons.findIndex(b => b.customId === rarityBallMap[rarity]);
   }
+  helper.msgDebugger(`bIndex = ${bIndex}`)
 
   if (bIndex != -1) {
     const posY = Math.floor(bIndex / 5); // 行
