@@ -1,5 +1,6 @@
 {
-  "token": "your token",
-  "guildId": "835042324643184691",
-  "ownChannelId":"your channel Id"
+  "token": "your discord token",
+  "guildId": "the guild on which you want the bot to spam.",
+  "ownChannelId":"the channel on which you want the bot to spam.",
+  "boostChannelId":"the boost channel on which you want the bot to spam."
 }
