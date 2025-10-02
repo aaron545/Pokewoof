@@ -71,13 +71,12 @@ async function checkMessageUpdate(message, client){
       if (ballsLeft["Pokeball"] <= 10) {
         helper.msgLogger("Pokeball is already used up, will buy balls automatically")
         await delay(2500);
-        const channel = client.channels.cache.get(newMessage.channelId);
+        const channel = client.channels.cache.get(message.channelId);
         safeSend(channel, ";s b 1 100")
       }
     }
   }
 }
-
 
 async function catchPokemon(message, rarity, streak) {
   const rarityBallMap = {

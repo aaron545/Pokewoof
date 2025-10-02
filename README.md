@@ -9,3 +9,12 @@ Edit content of sampleconfig.json and rename it as config.json.
 - ownChannelId: the channel on which you want the bot to spam.
 - boostChannelId: the **boost** channel on which you want the bot to spam.
 
+
+## 📜 Changelog
+
+### [v1.2.0] - 2025-10-02
+
+#### Added
+- 📌 **Auto-Buy Pokeballs**  
+  A brand new function has been added that allows the bot to automatically purchase Pokeballs when your stock runs out 🛒.  
+  No more worrying about running out of Pokeballs during your adventure — the bot’s got you covered ✅
