@@ -42,10 +42,26 @@ function extractStreak(footer) {
   return match[1];
 }
 
+function parseBalls(footer) {
+  // 這個正則會抓到類似 "Pokeballs: 92"
+  const regex = /(Pokeballs|Greatballs|Ultraballs|Masterballs|Premierballs)\s*:\s*(\d+)/g;
+  
+  const result = {};
+  for (const match of footer.matchAll(regex)) {
+    // 去掉最後一個 s
+    const ballName = match[1].replace(/s$/, '');
+    const count = Number(match[2]); 
+    result[ballName] = count;
+  }
+
+  return result;
+}
+
 module.exports = { 
   messageExtractor,
   msgLogger,
   msgDebugger,
   extractPokemonRarity,
   extractStreak,
+  parseBalls,
 };

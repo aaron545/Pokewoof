@@ -38,7 +38,7 @@ async function checkMessageCreate(message, client){
   let rarity = ''
   let streak = ''
 
-  if (message.type == 'REPLY' && message.mentions.repliedUser.username == client.user.username) {
+  if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
     if (desc.includes("found a wild")){
       rarity = helper.extractPokemonRarity(footer)
       streak = helper.extractStreak(footer)
@@ -63,6 +63,20 @@ async function checkMessageUpdate(message, client){
       await delay(1000);
       catchFish(message)
     }
+    if (footer.includes("Balls left")) {
+      ballsLeft = parseBalls(footer)
+      console.log(ballsLeft["Pokeball"])
+      if (ballsLeft["Pokeball"] <= 10) {
+        helper.msgLogger("Pokeball is already used up, will buy balls automatically")
+        await delay(2500);
+        const channel = client.channels.cache.get(newMessage.channelId);
+        safeSend(channel, ";s b 1 100")
+      }
+      // 之後有需要用到其他球的購買可使用
+      // Object.entries(ballsLeft).forEach(([ball, count]) => {
+      //   console.log(`${ball}: ${count}`)
+      // });
+    }
   }
 }
 
@@ -80,7 +94,7 @@ async function catchPokemon(message, rarity, streak) {
     Common: 'gb',
     Uncommon: 'gb',
     Rare: 'gb',
-    SuperRare: 'ub',
+    SuperRare: 'prb',
     Legendary: 'mb',
     Shiny: 'mb',
   };
@@ -88,6 +102,7 @@ async function catchPokemon(message, rarity, streak) {
     Common: 15,
     Uncommon: 10,
     Rare: 5,
+    SuperRare: 5,
   }
 
   let buttons = message.components?.[0]?.components ?? [];
@@ -102,11 +117,13 @@ async function catchPokemon(message, rarity, streak) {
   }
   helper.msgDebugger(`bIndex = ${bIndex}`)
 
-  if (bIndex != -1) {
+  if (bIndex !== -1) {
     const posY = Math.floor(bIndex / 5); // 行
     const posX = bIndex % 5;             // 列
     const pos = {X: posX, Y: posY}
     tryClickButton(message, pos)
+  } else {
+
   }
 }
 
@@ -116,7 +133,7 @@ async function catchFish(message) {
   bIndex = buttons.findIndex(b => b.customId === 'pb_fish');
   helper.msgDebugger(`bIndex = ${bIndex}`)
 
-  if (bIndex != -1) {
+  if (bIndex !== -1) {
     const posY = Math.floor(bIndex / 5); // 行
     const posX = bIndex % 5;             // 列
     const pos = {X: posX, Y: posY}
