@@ -66,9 +66,15 @@ function extractWildPokemonInfoByFooter(footer) {
 }
 
 function extractWildPokemonInfoByDesc(desc) {
+  // Pokemon's name
+  const match = desc.match(/a wild .*?\*\*(.+?)\*\*!/);
+  if (match) {
+    pokemonName = match[1];
+  }
+
   // Held item
   const hasHeldItem = desc.includes(":held_item:");
-  return hasHeldItem;
+  return [pokemonName, hasHeldItem];
 }
 
 function parseBalls(footer) {

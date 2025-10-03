@@ -1,4 +1,5 @@
 const helper = require('./helper');
+const { mustCatch } = require('./config.json');
 
 function safeSend(channel, content) {
   return channel.send(content).catch(err => {
@@ -35,18 +36,15 @@ async function checkMessageCreate(message, client){
   let [title, desc, embedAuthor, footer] = helper.messageExtractor(message);
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  let rarity = ''
-  let streak = ''
-
   if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
     if (desc.includes("found a wild")){
       // rarity = helper.extractPokemonRarity(footer)
       // streak = helper.extractStreak(footer)
-      [rarity, streak] = helper.extractWildPokemonInfoByFooter(footer)
-      hasHeldItem = helper.extractWildPokemonInfoByDesc(desc)
+      const [rarity, streak] = helper.extractWildPokemonInfoByFooter(footer)
+      const [pokemonName, hasHeldItem] = helper.extractWildPokemonInfoByDesc(desc)
       helper.msgLogger(`Rarity wild pokemon is ${rarity}`)
       await delay(1000);
-      catchPokemon(message, rarity, streak, hasHeldItem)
+      catchPokemon(message, rarity, streak, pokemonName, hasHeldItem)
     }
   }
 }
@@ -80,7 +78,7 @@ async function checkMessageUpdate(message, client){
   }
 }
 
-async function catchPokemon(message, rarity, streak, hasHeldItem) {
+async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem) {
   const rarityBallMap = {
     Common: 'pb',
     Uncommon: 'pb',
@@ -114,9 +112,14 @@ async function catchPokemon(message, rarity, streak, hasHeldItem) {
 
   let buttons = message.components?.[0]?.components ?? [];
 
+  helper.msgLogger(`Pokemon's Name: ${pokemonName}`);
   helper.msgDebugger(`${rarity} streak = ${streak}, HeldItem = ${hasHeldItem}`)
 
   let bIndex = ''
+  if (mustCatch.includes(pokemonName)) {
+    helper.msgLogger('Found event SR!')
+    bIndex = buttons.findIndex(b => b.customId === 'mb');
+  } 
   if (hasHeldItem) {
     bIndex = buttons.findIndex(b => b.customId === rarityBallWithHeldItemMap[rarity]);
   } else if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {

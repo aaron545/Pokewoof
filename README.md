@@ -8,9 +8,25 @@ Edit content of sampleconfig.json and rename it as config.json.
 - guildId: the guild on which you want the bot to spam.
 - ownChannelId: the channel on which you want the bot to spam.
 - boostChannelId: the **boost** channel on which you want the bot to spam.
+- mustCatch: an array of Pokémon names that the bot **must catch** (commonly used for event Pokémon).  
+  Example:  
+  ```json
+  "mustCatch": ["Iron-Valiant", "Pikachu-Partner"]
+  ```
 
 
 ## 📜 Changelog
+
+### [v1.4.0] - 2025-10-03
+
+#### Added
+- 🆕 **Detect Pokémon's Name**  
+  The bot can now recognize and extract the Pokémon's name directly from wild encounter messages ✨.  
+- 🎯 **mustCatch in config.json**  
+  A new `mustCatch` variable has been added to `config.json`.  
+  You can specify which Pokémon must always be caught (commonly used for special or event Pokémon) 🎉.
+
+---
 
 ### [v1.3.0] - 2025-10-03
 
