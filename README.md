@@ -12,6 +12,15 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.3.0] - 2025-10-03
+
+#### Added
+- 🔍 **Detect Held-Item**  
+  The bot can now detect whether a Pokémon has a held item.  
+  This can help you use more appropriate balls to catch Pokémon ⚔️🎒.
+
+---
+
 ### [v1.2.0] - 2025-10-02
 
 #### Added

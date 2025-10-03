@@ -42,6 +42,35 @@ function extractStreak(footer) {
   return match[1];
 }
 
+function extractWildPokemonInfoByFooter(footer) {
+  // rarity
+  if (footer.includes("Common")){
+    rarity = "Common"
+  } else if (footer.includes("Uncommon")) {
+    rarity = "Uncommon"
+  } else if (footer.includes("Super Rare")) {
+    rarity = "SuperRare"
+  } else if (footer.includes("Rare")) {
+    rarity = "Rare"
+  } else if (footer.includes("Legendary")) {
+    rarity = "Legendary"
+  } else if (footer.includes("Shiny")) {
+    rarity = "Shiny"
+  }
+
+  // Streak
+  match = footer.match(/streak:\s*(\d+)/i);
+  streak = match[1];
+
+  return [rarity, streak];
+}
+
+function extractWildPokemonInfoByDesc(desc) {
+  // Held item
+  const hasHeldItem = desc.includes(":held_item:");
+  return hasHeldItem;
+}
+
 function parseBalls(footer) {
   // 這個正則會抓到類似 "Pokeballs: 92"
   const regex = /(Pokeballs|Greatballs|Ultraballs|Masterballs|Premierballs)\s*:\s*(\d+)/g;
@@ -61,7 +90,7 @@ module.exports = {
   messageExtractor,
   msgLogger,
   msgDebugger,
-  extractPokemonRarity,
-  extractStreak,
+  extractWildPokemonInfoByFooter,
+  extractWildPokemonInfoByDesc,
   parseBalls,
 };

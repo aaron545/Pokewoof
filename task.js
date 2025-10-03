@@ -40,11 +40,13 @@ async function checkMessageCreate(message, client){
 
   if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
     if (desc.includes("found a wild")){
-      rarity = helper.extractPokemonRarity(footer)
-      streak = helper.extractStreak(footer)
+      // rarity = helper.extractPokemonRarity(footer)
+      // streak = helper.extractStreak(footer)
+      [rarity, streak] = helper.extractWildPokemonInfoByFooter(footer)
+      hasHeldItem = helper.extractWildPokemonInfoByDesc(desc)
       helper.msgLogger(`Rarity wild pokemon is ${rarity}`)
       await delay(1000);
-      catchPokemon(message, rarity, streak)
+      catchPokemon(message, rarity, streak, hasHeldItem)
     }
   }
 }
@@ -78,7 +80,7 @@ async function checkMessageUpdate(message, client){
   }
 }
 
-async function catchPokemon(message, rarity, streak) {
+async function catchPokemon(message, rarity, streak, hasHeldItem) {
   const rarityBallMap = {
     Common: 'pb',
     Uncommon: 'pb',
@@ -101,13 +103,23 @@ async function catchPokemon(message, rarity, streak) {
     Rare: 5,
     SuperRare: 5,
   }
+  const rarityBallWithHeldItemMap = {
+    Common: 'gb',
+    Uncommon: 'gb',
+    Rare: 'gb',
+    SuperRare: 'ub',
+    Legendary: 'mb',
+    Shiny: 'mb',
+  };
 
   let buttons = message.components?.[0]?.components ?? [];
 
-  helper.msgDebugger(`${rarity} streak = ${streak}`)
+  helper.msgDebugger(`${rarity} streak = ${streak}, HeldItem = ${hasHeldItem}`)
 
   let bIndex = ''
-  if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
+  if (hasHeldItem) {
+    bIndex = buttons.findIndex(b => b.customId === rarityBallWithHeldItemMap[rarity]);
+  } else if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
     bIndex = buttons.findIndex(b => b.customId === rarityBallWithStreakMap[rarity]);
   } else {
     bIndex = buttons.findIndex(b => b.customId === rarityBallMap[rarity]);
