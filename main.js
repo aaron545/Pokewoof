@@ -1,5 +1,5 @@
 const { Client } = require('discord.js-selfbot-v13');
-const { token, guildId, ownChannelId, boostChannelId } = require('./config.json');
+const { token, guildId, channelWhiteList } = require('./config.json');
 const { checkMessageCreate, checkMessageUpdate } = require('./task');
 const helper = require('./helper');
 
@@ -17,17 +17,16 @@ _| """ |_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
  `
   console.log(welcomeMsg);
   console.log(client.user.username);
-  ownChannel = client.channels.cache.get(ownChannelId);
 })
 
 client.on('messageCreate', async (message) => {
-  if (message.channelId != boostChannelId && message.guildId != guildId) return;
+  if (!channelWhiteList.includes(message.channelId)) return;
   checkMessageCreate(message, client);
 
 })
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
-  if (newMessage.channelId != boostChannelId && newMessage.guildId != guildId) return;
+  if (!channelWhiteList.includes(newMessage.channelId)) return;
 
   // 把舊的和新的 embed description 抓出來
   const oldDesc = oldMessage.embeds?.[0]?.description ?? "";

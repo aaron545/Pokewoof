@@ -17,6 +17,21 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.5.0] - 2025-10-07
+
+#### Added
+- ⚪ **Channel Whitelist (`channelWhiteList`)**  
+  A new `channelWhiteList` option has been added to `config.json`.  
+  You can now specify which channels the bot is allowed to operate in.  
+  Simply add channel IDs to this list to whitelist them 🧾.  
+  Example:  
+  ```json
+  "channelWhiteList": [
+    "you can add channels",
+    "with any numbers in this list"
+  ]
+  ```
+
 ### [v1.4.0] - 2025-10-03
 
 #### Added
