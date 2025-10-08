@@ -17,6 +17,17 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.6.0] - 2025-10-08
+
+#### Added
+- 🎣 **Fishing rarity detection**  
+  When using the fishing feature, the bot can now detect the rarity of the Pokémon (R / SR / L) and automatically select the appropriate Pokéball based on its rarity:  
+  - Shiny / Golden / Legendary → use `Diveball`  
+  - Rare → use `Greatball`  
+  - Super Rare → use `Ultraball`  
+  - Others → use the basic Pokéball `Pokeball`  
+  This allows the bot to automatically use the most suitable ball for higher rarity Pokémon, increasing your chances of a successful catch 🎯.
+
 ### [v1.5.0] - 2025-10-07
 
 #### Added
