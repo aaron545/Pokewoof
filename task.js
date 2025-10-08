@@ -115,7 +115,7 @@ async function checkMessageUpdate(message, client){
       const [pokemonName, _] = helper.extractWildPokemonInfoByDesc(desc)
       catchFish(message, pokemonName)
     }
-    if (footer.includes("Balls left")) {
+    if (footer.includes("Balls left") && !desc.includes("fished a wild")) {
       ballsLeft = helper.parseBalls(footer)
       Object.entries(ballsLeft).forEach(([ball, count]) => {
         helper.msgDebugger(`${ball}: ${count}`)

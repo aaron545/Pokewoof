@@ -17,6 +17,11 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.6.1] - 2025-10-08
+
+#### Fixed
+- 🐛 Fixed a bug where the number of Pokéballs was printed twice in the fishing log.
+
 ### [v1.6.0] - 2025-10-08
 
 #### Added
