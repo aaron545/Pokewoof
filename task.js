@@ -136,27 +136,29 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem) {
   helper.msgLogger(`Pokemon's Name: ${pokemonName}`);
   helper.msgDebugger(`${rarity} streak = ${streak}, HeldItem = ${hasHeldItem}`)
 
-  let bIndex = ''
+  let bIndex = -1;
+  let targetCustomId;
+
   if (mustCatch.includes(pokemonName)) {
-    helper.msgLogger('Found event SR!')
-    bIndex = buttons.findIndex(b => b.customId === 'mb');
+    helper.msgLogger('Found event SR!');
+    targetCustomId = 'mb';
   } 
   if (hasHeldItem) {
-    bIndex = buttons.findIndex(b => b.customId === rarityBallWithHeldItemMap[rarity]);
+    targetCustomId = rarityBallWithHeldItemMap[rarity];
   } else if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
-    bIndex = buttons.findIndex(b => b.customId === rarityBallWithStreakMap[rarity]);
+    targetCustomId = rarityBallWithStreakMap[rarity];
   } else {
-    bIndex = buttons.findIndex(b => b.customId === rarityBallMap[rarity]);
+    targetCustomId = rarityBallMap[rarity];
   }
-  helper.msgDebugger(`bIndex = ${bIndex}`)
+  bIndex = buttons.findIndex(b => b.customId === targetCustomId);
+  if (bIndex === -1) bIndex = buttons.findIndex(b => b.customId === 'pb');
+
+  helper.msgDebugger(`bIndex = ${bIndex}`);
 
   if (bIndex !== -1) {
-    const posY = Math.floor(bIndex / 5); // 行
-    const posX = bIndex % 5;             // 列
-    const pos = {X: posX, Y: posY}
-    tryClickButton(message, pos)
-  } else {
-
+    const posY = Math.floor(bIndex / 5);          // 行
+    const posX = bIndex % 5;                      // 列
+    tryClickButton(message, { X: posX, Y: posY });
   }
 }
 

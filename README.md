@@ -6,8 +6,7 @@ Edit content of sampleconfig.json and rename it as config.json.
 ## Config detail
 - token: please refer to this [video](https://youtu.be/_4s2DpUhLGQ?si=Y_SXTWQzs9s-n6D8&t=180) to get your discord token.
 - guildId: the guild on which you want the bot to spam.
-- ownChannelId: the channel on which you want the bot to spam.
-- boostChannelId: the **boost** channel on which you want the bot to spam.
+- channelWhiteList: an array with channelId
 - mustCatch: an array of Pokémon names that the bot **must catch** (commonly used for event Pokémon).  
   Example:  
   ```json
@@ -16,6 +15,12 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 
 ## 📜 Changelog
+
+### [v1.6.2] - 2025-10-09
+
+#### Fixed
+- 🐛 Fixed a minor bug where the bot would stop acting if the target Pokéball button could not be found.  
+  It now safely defaults to the regular Pokéball (`pb`) instead of taking no action.
 
 ### [v1.6.1] - 2025-10-08
 
@@ -33,6 +38,8 @@ Edit content of sampleconfig.json and rename it as config.json.
   - Others → use the basic Pokéball `Pokeball`  
   This allows the bot to automatically use the most suitable ball for higher rarity Pokémon, increasing your chances of a successful catch 🎯.
 
+---
+
 ### [v1.5.0] - 2025-10-07
 
 #### Added
@@ -47,6 +54,8 @@ Edit content of sampleconfig.json and rename it as config.json.
     "with any numbers in this list"
   ]
   ```
+
+---
 
 ### [v1.4.0] - 2025-10-03
 
