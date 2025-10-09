@@ -16,6 +16,13 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.6.3] - 2025-10-09
+
+#### Changed
+- ⚙️ Adjusted the Pokéball selection logic when fishing.  
+  - **Shiny** and **Golden** Pokémon now use **Master Ball**.  
+  - **Legendary** Pokémon now use **Dive Ball**. 
+
 ### [v1.6.2] - 2025-10-09
 
 #### Fixed

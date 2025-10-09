@@ -171,7 +171,9 @@ async function catchFish(message, pokemonName) {
   let bIndex = -1;
   let targetCustomId;
 
-  if (name.includes("shiny") || name.includes("golden") || legendarySet.has(name)) {
+  if (name.includes("shiny") || name.includes("golden")){
+    targetCustomId = 'mb_fish';
+  } else if (legendarySet.has(name)) {
     targetCustomId = 'db_fish';
   } else if (rareSet.has(name)) {
     targetCustomId = 'gb_fish';
