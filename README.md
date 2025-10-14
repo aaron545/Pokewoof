@@ -16,6 +16,13 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.6.4] - 2025-10-14
+
+#### Fixed
+- 🧩 **Fixed major Pokéball selection logic issue**  
+  Previously, even if a Pokémon was included in the `mustCatch` list, the bot would continue checking for held items or streak bonuses afterward, which could result in the wrong Pokéball being used.  
+  The logic has been corrected to use `else if`, ensuring that once a must-catch Pokémon is detected, the bot **always uses the Master Ball (`mb`)** and skips further checks.
+
 ### [v1.6.3] - 2025-10-09
 
 #### Changed

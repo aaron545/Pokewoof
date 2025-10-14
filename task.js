@@ -27,8 +27,8 @@ const rarityStreakMap = {
 const rarityBallWithHeldItemMap = {
   Common: 'gb',
   Uncommon: 'gb',
-  Rare: 'gb',
-  SuperRare: 'ub',
+  Rare: 'ub',
+  SuperRare: 'prb',
   Legendary: 'mb',
   Shiny: 'mb',
 };
@@ -59,7 +59,7 @@ function safeSend(channel, content) {
   });
 }
 
-async function tryClickButton(message, pos = {X: 0, Y: 0}, retries = 5, delayMs = 1000) {
+async function tryClickButton(message, pos = {X: 0, Y: 0}, retries = 5, delayMs = 300) {
   for (let i = 0; i < retries; i++) {
     try {
       await message.clickButton(pos);
@@ -142,8 +142,7 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem) {
   if (mustCatch.includes(pokemonName)) {
     helper.msgLogger('Found event SR!');
     targetCustomId = 'mb';
-  } 
-  if (hasHeldItem) {
+  } else if (hasHeldItem) {
     targetCustomId = rarityBallWithHeldItemMap[rarity];
   } else if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
     targetCustomId = rarityBallWithStreakMap[rarity];
