@@ -16,6 +16,17 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.7.0] - 2025-10-16
+
+#### Added
+- 🛡️ **Team logo check for target ball usage**  
+  The bot now verifies the player's faction/team logo. If the team logo matches the required faction, the bot will use the day's designated target Pokéball automatically — **except** it will always ignore `prb` and `mb` (these are never auto-selected by the target-ball logic).
+
+- ⚙️ **Auto faction & target-ball detection on startup**  
+  When the bot starts, it now automatically checks the faction/team content and determines what today's target Pokéball is. This ensures the bot knows the correct default ball to use before any encounters occur.
+
+---
+
 ### [v1.6.4] - 2025-10-14
 
 #### Fixed

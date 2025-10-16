@@ -1,9 +1,11 @@
 {
   "token": "your discord token",
   "guildId": "the guild on which you want the bot to spam.",
+  "ownchannelId": "please use 喵咪貓貓叫's channel, Don't use public channel",
   "channelWhiteList":[
     "you can add channels",
     "with any numbers in this list",
   ],
-  "mustCatch":["Chishin","didn't","like","mewtwo"]
+  "mustCatch":["Chishin","didn't","like","mewtwo"],
+  "teamName":"Your faction's name, like Rocket, Plasma and so on"
 }

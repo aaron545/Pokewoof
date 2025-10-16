@@ -2,6 +2,7 @@ const { Client } = require('discord.js-selfbot-v13');
 const { token, guildId, channelWhiteList } = require('./config.json');
 const { checkMessageCreate, checkMessageUpdate } = require('./task');
 const helper = require('./helper');
+const { boot } = require('./boot');
 
 const client = new Client();
 client.on('ready', async () => {
@@ -16,7 +17,8 @@ _| """ |_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
                                                                                      
  `
   console.log(welcomeMsg);
-  console.log(client.user.username);
+  console.log(`Login as ${client.user.username}`);
+  boot(client);
 })
 
 client.on('messageCreate', async (message) => {

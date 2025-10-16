@@ -1,5 +1,5 @@
 const helper = require('./helper');
-const { mustCatch } = require('./config.json');
+const { mustCatch, teamName } = require('./config.json');
 
 // for function catchPokemon
 const rarityBallMap = {
@@ -32,6 +32,13 @@ const rarityBallWithHeldItemMap = {
   Legendary: 'mb',
   Shiny: 'mb',
 };
+const ballNameWithTeamLogoMap = {
+  pokeball: 'pb',
+  greatball: 'gb',
+  ultraball: 'ub',
+  premierball: 'pb',
+  masterball: 'pb',
+};
 // end for function catchPokemon
 
 // for function catchFish
@@ -51,6 +58,9 @@ const rareSet = new Set(rareList.map(x => x.toLowerCase()));
 const superRareSet = new Set(superRareList.map(x => x.toLowerCase()));
 const legendarySet = new Set(legendaryList.map(x => x.toLowerCase()));
 // end for function catchFish
+
+let todayBall = ''
+let teamLogoId = ''
 
 function safeSend(channel, content) {
   return channel.send(content).catch(err => {
@@ -89,13 +99,17 @@ async function checkMessageCreate(message, client){
 
   if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
     if (desc.includes("found a wild")){
-      // rarity = helper.extractPokemonRarity(footer)
-      // streak = helper.extractStreak(footer)
       const [rarity, streak] = helper.extractWildPokemonInfoByFooter(footer)
-      const [pokemonName, hasHeldItem] = helper.extractWildPokemonInfoByDesc(desc)
+      const [pokemonName, hasHeldItem, hasTeamLogo] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId)
       helper.msgLogger(`Rarity wild pokemon is ${rarity}`)
       await delay(800);
-      catchPokemon(message, rarity, streak, pokemonName, hasHeldItem)
+      catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, hasTeamLogo)
+    }
+    // Faction 
+    if (embedAuthor.includes(`Team ${teamName} — Headquarters`)) {
+      [teamLogoId, todayBall] = helper.parseFaction(desc);
+      helper.msgLogger(`Team's ID is ${teamLogoId}`)
+      helper.msgLogger(`Today's ball is ${todayBall}`)
     }
   }
 }
@@ -112,7 +126,7 @@ async function checkMessageUpdate(message, client){
     }
     if (desc.includes("fished a wild")){
       await delay(800);
-      const [pokemonName, _] = helper.extractWildPokemonInfoByDesc(desc)
+      const [pokemonName, , ] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId)
       catchFish(message, pokemonName)
     }
     if (footer.includes("Balls left") && !desc.includes("fished a wild")) {
@@ -130,11 +144,11 @@ async function checkMessageUpdate(message, client){
   }
 }
 
-async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem) {
+async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, hasTeamLogo) {
   let buttons = message.components?.[0]?.components ?? [];
 
   helper.msgLogger(`Pokemon's Name: ${pokemonName}`);
-  helper.msgDebugger(`${rarity} streak = ${streak}, HeldItem = ${hasHeldItem}`)
+  helper.msgDebugger(`${rarity} streak = ${streak}, HeldItem = ${hasHeldItem}, ownTeamlogo = ${hasTeamLogo}`)
 
   let bIndex = -1;
   let targetCustomId;
@@ -146,6 +160,8 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem) {
     targetCustomId = rarityBallWithHeldItemMap[rarity];
   } else if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
     targetCustomId = rarityBallWithStreakMap[rarity];
+  } else if (hasTeamLogo) {
+    targetCustomId = ballNameWithTeamLogoMap[todayBall];
   } else {
     targetCustomId = rarityBallMap[rarity];
   }

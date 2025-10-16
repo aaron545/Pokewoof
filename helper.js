@@ -65,16 +65,21 @@ function extractWildPokemonInfoByFooter(footer) {
   return [rarity, streak];
 }
 
-function extractWildPokemonInfoByDesc(desc) {
+function extractWildPokemonInfoByDesc(desc, teamLogoId) {
   // Pokemon's name
-  const match = desc.match(/a wild .*?\*\*(.+?)\*\*!/);
-  if (match) {
-    pokemonName = match[1];
+  const nameMatch = desc.match(/a wild .*?\*\*(.+?)\*\*!/);
+  if (nameMatch) {
+    pokemonName = nameMatch[1];
   }
 
   // Held item
   const hasHeldItem = desc.includes(":held_item:");
-  return [pokemonName, hasHeldItem];
+
+  // Team logo
+
+  const hasTeamLogo = desc.includes(`:team_logo:${teamLogoId}`)
+
+  return [pokemonName, hasHeldItem, hasTeamLogo];
 }
 
 function parseBalls(footer) {
@@ -92,6 +97,24 @@ function parseBalls(footer) {
   return result;
 }
 
+function parseFaction(desc) {
+  // Team logo ID
+  const idLine = desc.split('\n').find(l => /Points/.test(l));
+  if (!idLine) return;
+  const idMatch = idLine.match(/<:team_logo:(\d+)>/i);
+  if (!idMatch) return;
+  teamLogoId = idMatch[1];
+
+  // Today ball
+  const ballLine = desc.split('\n').find(l => /Today's target Pokemon are/i.test(l));
+  if (!ballLine) return;
+  const todayBallMatch = ballLine.match(/<:(.+):\d+/i);
+  if (!todayBallMatch) return;
+  todayBall = todayBallMatch[1];
+
+  return [teamLogoId, todayBall];
+}
+
 module.exports = { 
   messageExtractor,
   msgLogger,
@@ -99,4 +122,5 @@ module.exports = {
   extractWildPokemonInfoByFooter,
   extractWildPokemonInfoByDesc,
   parseBalls,
+  parseFaction,
 };
