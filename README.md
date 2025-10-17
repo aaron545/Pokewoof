@@ -16,6 +16,18 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+---
+
+### [v1.8.0] - 2025-10-16
+
+#### Added
+- 🛒 **Automatic Pokéball purchasing system**  
+  The bot now automatically detects when your Pokéballs are running low and purchases more based on predefined thresholds.  
+  🪄 Configuration includes Pokéball, Greatball, and Ultraball 
+  ✅ Ensures uninterrupted gameplay and prevents catching attempts from failing due to lack of balls.
+
+---
+
 ### [v1.7.1] - 2025-10-16
 
 #### Changed

@@ -1,6 +1,14 @@
 const helper = require('./helper');
 const { mustCatch, teamName } = require('./config.json');
 
+// for buying more balls automatically
+const ballConfig = [
+  { name: "Pokeball", id: 1, threshold: 10, amount: 100 },
+  { name: "Greatball", id: 2, threshold: 6, amount: 60 },
+  { name: "Ultraball", id: 3, threshold: 3, amount: 30 },
+];
+// end for buying more balls automatically
+
 // for function catchPokemon
 const rarityBallMap = {
     Common: 'pb',
@@ -134,11 +142,14 @@ async function checkMessageUpdate(message, client){
       Object.entries(ballsLeft).forEach(([ball, count]) => {
         helper.msgDebugger(`${ball}: ${count}`)
       });
-      if (ballsLeft["Pokeball"] <= 10) {
-        helper.msgLogger("Pokeball is already used up, will buy balls automatically")
-        await delay(2500);
-        const channel = client.channels.cache.get(message.channelId);
-        safeSend(channel, ";s b 1 100")
+      for (const { name, id, threshold, amount } of ballConfig) {
+        if (ballsLeft[name] <= threshold) {
+          helper.msgLogger(`${name} is running low (${ballsLeft[name]} left), buying more automatically...`);
+          await delay(2500);
+          const channel = client.channels.cache.get(message.channelId);
+          safeSend(channel, `;s b ${id} ${amount}`);
+          break; // ✅ 防止同時買多種球
+        }
       }
     }
   }
