@@ -18,6 +18,12 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ---
 
+### [v1.8.1] - 2025-10-16
+
+#### Fixed
+- 🐞 **Fix bug with detecting Pokéballs**  
+  Resolved an issue where the bot occasionally failed to correctly detect the remaining number of Pokéballs
+
 ### [v1.8.0] - 2025-10-16
 
 #### Added
