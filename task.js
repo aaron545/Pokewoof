@@ -13,7 +13,7 @@ const ballConfig = [
 const rarityBallMap = {
     Common: 'pb',
     Uncommon: 'pb',
-    Rare: 'pb',
+    Rare: 'gb',
     SuperRare: 'ub',
     Legendary: 'mb',
     Shiny: 'mb',
@@ -21,7 +21,7 @@ const rarityBallMap = {
 const rarityBallWithStreakMap = {
   Common: 'gb',
   Uncommon: 'gb',
-  Rare: 'gb',
+  Rare: 'ub',
   SuperRare: 'prb',
   Legendary: 'mb',
   Shiny: 'mb',
@@ -44,8 +44,8 @@ const ballNameWithTeamLogoMap = {
   pokeball: 'pb',
   greatball: 'gb',
   ultraball: 'ub',
-  premierball: 'pb',
-  masterball: 'pb',
+  premierball: '',
+  masterball: '',
 };
 // end for function catchPokemon
 
@@ -164,6 +164,8 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
   let bIndex = -1;
   let targetCustomId;
 
+  targetCustomId = rarityBallMap[rarity];
+
   if (mustCatch.includes(pokemonName)) {
     helper.msgLogger('Found event SR!');
     targetCustomId = 'mb';
@@ -172,10 +174,11 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
   } else if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
     targetCustomId = rarityBallWithStreakMap[rarity];
   } else if (hasTeamLogo) {
-    targetCustomId = ballNameWithTeamLogoMap[todayBall];
-  } else {
-    targetCustomId = rarityBallMap[rarity];
-  }
+    if (ballNameWithTeamLogoMap[todayBall] != '') {
+      targetCustomId = ballNameWithTeamLogoMap[todayBall];
+    }
+  } 
+
   bIndex = buttons.findIndex(b => b.customId === targetCustomId);
   if (bIndex === -1) bIndex = buttons.findIndex(b => b.customId === 'pb');
 

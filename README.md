@@ -18,6 +18,20 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ---
 
+### [v1.8.2] - 2025-10-16
+
+#### Changed
+- 🎯 **Adjusted Pokeball mapping for Rare Pokémon**  
+  Updated the `rarityBallMap` and `rarityBallWithStreakMap` configurations to refine Pokéball selection logic.  
+  - `Rare` rarity now uses **Greatball (`gb`)** instead of **Pokeball (`pb`)** in normal mode.  
+  - In streak mode, `Rare` now uses **Ultraball (`ub`)** instead of **Greatball (`gb`)**.  
+  ⚙️ This change improves catch efficiency for rare Pokémon.
+
+#### Fixed
+- 🐞 **Fixed incorrect Pokeball override**  
+  Resolved an issue where the bot would always fall back to using **Pokéball (`pb`)** when `todayBall` was set to **Premier Ball (`prb`)** or **Master Ball (`mb`)**.  
+  ✅ The bot now correctly handles these cases without forcing a fallback.
+
 ### [v1.8.1] - 2025-10-16
 
 #### Fixed
