@@ -77,7 +77,8 @@ function extractWildPokemonInfoByDesc(desc, teamLogoId) {
 
   // Team logo
 
-  const hasTeamLogo = desc.includes(`:team_logo:${teamLogoId}`)
+  // const hasTeamLogo = desc.includes(`:team_logo:${teamLogoId}`)
+  const hasTeamLogo = desc.includes(`:team_logo:`)
 
   return [pokemonName, hasHeldItem, hasTeamLogo];
 }

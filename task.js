@@ -148,7 +148,7 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
   let buttons = message.components?.[0]?.components ?? [];
 
   helper.msgLogger(`Pokemon's Name: ${pokemonName}`);
-  helper.msgDebugger(`${rarity} streak = ${streak}, HeldItem = ${hasHeldItem}, ownTeamlogo = ${hasTeamLogo}`)
+  helper.msgDebugger(`${rarity} Streak = ${streak}, HeldItem = ${hasHeldItem}, Teamlogo = ${hasTeamLogo}`)
 
   let bIndex = -1;
   let targetCustomId;

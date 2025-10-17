@@ -16,6 +16,13 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ## 📜 Changelog
 
+### [v1.7.1] - 2025-10-16
+
+#### Changed
+- 🔄 **Simplified team logo detection logic**  
+  Previously, the bot checked for a *specific* team logo ID. Now, it simply checks whether any team logo.
+  ✅ This improves flexibility and prevents missed detections when multiple team logos are in play.
+
 ### [v1.7.0] - 2025-10-16
 
 #### Added
