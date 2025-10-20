@@ -12,16 +12,16 @@ const ballConfig = [
 // for function catchPokemon
 
 const ballPriority = {
-  pb: 1,
-  gb: 2,
+  pb: 2,
+  gb: 1,
   ub: 3,
   prb: 4,
   mb: 5,
 };
 
 const rarityBallMap = {
-  Common: 'pb',
-  Uncommon: 'pb',
+  Common: 'gb',
+  Uncommon: 'gb',
   Rare: 'gb',
   SuperRare: 'ub',
   Legendary: 'mb',
@@ -42,8 +42,8 @@ const rarityStreakMap = {
   SuperRare: 5,
 }
 const rarityBallWithHeldItemMap = {
-  Common: 'gb',
-  Uncommon: 'gb',
+  Common: 'ub',
+  Uncommon: 'ub',
   Rare: 'ub',
   SuperRare: 'prb',
   Legendary: 'mb',
