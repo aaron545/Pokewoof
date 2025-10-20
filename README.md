@@ -16,7 +16,15 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 ## 📜 Changelog
 
 ### 🔗 Versions
-[1.8.3](#v183) | [1.8.2](#v182) | [1.8.1](#v181) | [1.8.0](#v180) | [1.7.1](#v171) | [1.7.0](#v170) | [1.6.4](#v164) | [1.6.3](#v163) | [1.6.2](#v162) | [1.6.1](#v161) | [1.6.0](#v160) | [1.5.0](#v150) | [1.4.0](#v140) | [1.3.0](#v130) | [1.2.0](#v120)
+[1.8.4](#v184) | [1.8.3](#v183) | [1.8.2](#v182) | [1.8.1](#v181) | [1.8.0](#v180) | [1.7.1](#v171) | [1.7.0](#v170) | [1.6.4](#v164) | [1.6.3](#v163) | [1.6.2](#v162) | [1.6.1](#v161) | [1.6.0](#v160) | [1.5.0](#v150) | [1.4.0](#v140) | [1.3.0](#v130) | [1.2.0](#v120)
+
+---
+
+### [v1.8.4] - 2025-10-20 <a id="v184"></a>
+
+#### Fixed
+- 🐞 **Fix naming error** 
+  naming error `mappedTeamBall -> ballNameWithTeamLogoMap[todayBall]`
 
 ---
 
@@ -92,6 +100,8 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
   Previously, even if a Pokémon was included in the `mustCatch` list, the bot would continue checking for held items or streak bonuses afterward, which could result in the wrong Pokéball being used.  
   The logic has been corrected to use `else if`, ensuring that once a must-catch Pokémon is detected, the bot **always uses the Master Ball (`mb`)** and skips further checks.
 
+---
+
 ### [v1.6.3] - 2025-10-09 <a id="v163"></a>
 
 #### Changed
@@ -99,16 +109,22 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
   - **Shiny** and **Golden** Pokémon now use **Master Ball**.  
   - **Legendary** Pokémon now use **Dive Ball**. 
 
+---
+
 ### [v1.6.2] - 2025-10-09 <a id="v162"></a>
 
 #### Fixed
 - 🐛 Fixed a minor bug where the bot would stop acting if the target Pokéball button could not be found.  
   It now safely defaults to the regular Pokéball (`pb`) instead of taking no action.
 
+---
+
 ### [v1.6.1] - 2025-10-08 <a id="v161"></a>
 
 #### Fixed
 - 🐛 Fixed a bug where the number of Pokéballs was printed twice in the fishing log.
+
+---
 
 ### [v1.6.0] - 2025-10-08 <a id="v160"></a>
 

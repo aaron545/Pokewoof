@@ -194,7 +194,7 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
 
   if (hasTeamLogo && ballNameWithTeamLogoMap[todayBall] != '') {
     // helper.msgDebugger(`Teamlogo = ${hasTeamLogo}`)
-    candidates.add(mappedTeamBall);
+    candidates.add(ballNameWithTeamLogoMap[todayBall]);
   } 
 
   let candidateList = Array.from(candidates)
