@@ -16,7 +16,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 ## 📜 Changelog
 
 ### 🔗 Versions
-[1.8.3](#v183) | [1.8.2](#v182) | [1.8.1](#v181) | [1.8.0](#v180) | [1.7.1](#v171) | [1.7.0](#v170) | [1.6.x](#v164) | [1.5.0](#v150) | [1.4.0](#v140) | [1.3.0](#v130) | [1.2.0](#v120)
+[1.8.3](#v183) | [1.8.2](#v182) | [1.8.1](#v181) | [1.8.0](#v180) | [1.7.1](#v171) | [1.7.0](#v170) | [1.6.4](#v164) | [1.6.3](#v163) | [1.6.2](#v162) | [1.6.1](#v161) | [1.6.0](#v160) | [1.5.0](#v150) | [1.4.0](#v140) | [1.3.0](#v130) | [1.2.0](#v120)
 
 ---
 
@@ -51,7 +51,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 #### Fixed
 - 🐞 **Fix bug with detecting Pokéballs**  
-  Resolved an issue where the bot occasionally failed to correctly detect the remaining number of Pokéballs.
+  Resolved an issue where the bot occasionally failed to correctly detect the remaining number of Pokéballs
 
 ---
 
@@ -60,7 +60,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 #### Added
 - 🛒 **Automatic Pokéball purchasing system**  
   The bot now automatically detects when your Pokéballs are running low and purchases more based on predefined thresholds.  
-  🪄 Configuration includes Pokéball, Greatball, and Ultraball.  
+  🪄 Configuration includes Pokéball, Greatball, and Ultraball 
   ✅ Ensures uninterrupted gameplay and prevents catching attempts from failing due to lack of balls.
 
 ---
@@ -69,7 +69,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 #### Changed
 - 🔄 **Simplified team logo detection logic**  
-  Previously, the bot checked for a *specific* team logo ID. Now, it simply checks whether any team logo.  
+  Previously, the bot checked for a *specific* team logo ID. Now, it simply checks whether any team logo.
   ✅ This improves flexibility and prevents missed detections when multiple team logos are in play.
 
 ---
@@ -78,26 +78,48 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 #### Added
 - 🛡️ **Team logo check for target ball usage**  
-  The bot now verifies the player's faction/team logo.  
-  If the team logo matches the required faction, the bot will use the day's designated target Pokéball automatically —  
-  **except** it will always ignore `prb` and `mb` (these are never auto-selected by the target-ball logic).
+  The bot now verifies the player's faction/team logo. If the team logo matches the required faction, the bot will use the day's designated target Pokéball automatically — **except** it will always ignore `prb` and `mb` (these are never auto-selected by the target-ball logic).
 
 - ⚙️ **Auto faction & target-ball detection on startup**  
-  When the bot starts, it now automatically checks the faction/team content and determines what today's target Pokéball is.  
-  This ensures the bot knows the correct default ball to use before any encounters occur.
+  When the bot starts, it now automatically checks the faction/team content and determines what today's target Pokéball is. This ensures the bot knows the correct default ball to use before any encounters occur.
 
 ---
 
-### [v1.6.x] - 2025-10-08~14 <a id="v164"></a>
+### [v1.6.4] - 2025-10-14 <a id="v164"></a>
 
 #### Fixed
 - 🧩 **Fixed major Pokéball selection logic issue**  
-- 🐛 Fixed crash when button not found (default to pb).  
-- 🐛 Fixed duplicated Pokéball number log.  
+  Previously, even if a Pokémon was included in the `mustCatch` list, the bot would continue checking for held items or streak bonuses afterward, which could result in the wrong Pokéball being used.  
+  The logic has been corrected to use `else if`, ensuring that once a must-catch Pokémon is detected, the bot **always uses the Master Ball (`mb`)** and skips further checks.
+
+### [v1.6.3] - 2025-10-09 <a id="v163"></a>
 
 #### Changed
-- ⚙️ Adjusted Pokéball selection when fishing.  
-- 🎣 Added fishing rarity detection for automatic Pokéball choice.  
+- ⚙️ Adjusted the Pokéball selection logic when fishing.  
+  - **Shiny** and **Golden** Pokémon now use **Master Ball**.  
+  - **Legendary** Pokémon now use **Dive Ball**. 
+
+### [v1.6.2] - 2025-10-09 <a id="v162"></a>
+
+#### Fixed
+- 🐛 Fixed a minor bug where the bot would stop acting if the target Pokéball button could not be found.  
+  It now safely defaults to the regular Pokéball (`pb`) instead of taking no action.
+
+### [v1.6.1] - 2025-10-08 <a id="v161"></a>
+
+#### Fixed
+- 🐛 Fixed a bug where the number of Pokéballs was printed twice in the fishing log.
+
+### [v1.6.0] - 2025-10-08 <a id="v160"></a>
+
+#### Added
+- 🎣 **Fishing rarity detection**  
+  When using the fishing feature, the bot can now detect the rarity of the Pokémon (R / SR / L) and automatically select the appropriate Pokéball based on its rarity:  
+  - Shiny / Golden / Legendary → use `Diveball`  
+  - Rare → use `Greatball`  
+  - Super Rare → use `Ultraball`  
+  - Others → use the basic Pokéball `Pokeball`  
+  This allows the bot to automatically use the most suitable ball for higher rarity Pokémon, increasing your chances of a successful catch 🎯.
 
 ---
 
@@ -105,7 +127,9 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 #### Added
 - ⚪ **Channel Whitelist (`channelWhiteList`)**  
-  Added whitelist option to restrict bot activity to specific channels.
+  A new `channelWhiteList` option has been added to `config.json`.  
+  You can now specify which channels the bot is allowed to operate in.  
+  Simply add channel IDs to this list to whitelist them 🧾.  
 
 ---
 
@@ -113,7 +137,10 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 #### Added
 - 🆕 **Detect Pokémon's Name**  
-- 🎯 **mustCatch in config.json**
+  The bot can now recognize and extract the Pokémon's name directly from wild encounter messages ✨.  
+- 🎯 **mustCatch in config.json**  
+  A new `mustCatch` variable has been added to `config.json`.  
+  You can specify which Pokémon must always be caught (commonly used for special or event Pokémon) 🎉.
 
 ---
 
@@ -121,11 +148,14 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 #### Added
 - 🔍 **Detect Held-Item**  
+  The bot can now detect whether a Pokémon has a held item.  
+  This can help you use more appropriate balls to catch Pokémon ⚔️🎒.
 
 ---
 
 ### [v1.2.0] - 2025-10-02 <a id="v120"></a>
 
 #### Added
-- 📌 **Auto-Buy Pokéballs**  
-  Automatically purchase Pokéballs when out of stock.
+- 📌 **Auto-Buy Pokeballs**  
+  A brand new function has been added that allows the bot to automatically purchase Pokeballs when your stock runs out 🛒.  
+  No more worrying about running out of Pokeballs during your adventure — the bot’s got you covered ✅
