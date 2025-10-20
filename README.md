@@ -18,6 +18,15 @@ Edit content of sampleconfig.json and rename it as config.json.
 
 ---
 
+### [v1.8.3] - 2025-10-20
+
+#### Changed
+- ⚙️ **Improved Pokéball selection logic**  
+  Previously, when multiple conditions were met (e.g. streak bonus + held item), the bot would only choose the **first** matching Pokéball.  
+  🧠 Now, it evaluates **all possible matches** and selects the one with the **highest priority** based on the following order:  
+  `pokeball < greatball < ultraball < premierball < masterball`  
+  ✅ This ensures the bot always uses the **most suitable and valuable** Pokéball for each situation.
+
 ### [v1.8.2] - 2025-10-16
 
 #### Changed

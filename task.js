@@ -10,13 +10,22 @@ const ballConfig = [
 // end for buying more balls automatically
 
 // for function catchPokemon
+
+const ballPriority = {
+  pb: 1,
+  gb: 2,
+  ub: 3,
+  prb: 4,
+  mb: 5,
+};
+
 const rarityBallMap = {
-    Common: 'pb',
-    Uncommon: 'pb',
-    Rare: 'gb',
-    SuperRare: 'ub',
-    Legendary: 'mb',
-    Shiny: 'mb',
+  Common: 'pb',
+  Uncommon: 'pb',
+  Rare: 'gb',
+  SuperRare: 'ub',
+  Legendary: 'mb',
+  Shiny: 'mb',
 };
 const rarityBallWithStreakMap = {
   Common: 'gb',
@@ -164,20 +173,39 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
   let bIndex = -1;
   let targetCustomId;
 
-  targetCustomId = rarityBallMap[rarity];
+  const candidates = new Set();
+
+  candidates.add(rarityBallMap[rarity]);
 
   if (mustCatch.includes(pokemonName)) {
-    helper.msgLogger('Found event SR!');
-    targetCustomId = 'mb';
-  } else if (hasHeldItem) {
-    targetCustomId = rarityBallWithHeldItemMap[rarity];
-  } else if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
-    targetCustomId = rarityBallWithStreakMap[rarity];
-  } else if (hasTeamLogo) {
-    if (ballNameWithTeamLogoMap[todayBall] != '') {
-      targetCustomId = ballNameWithTeamLogoMap[todayBall];
-    }
+    helper.msgLogger('Found event Pokémon !!');
+    candidates.add('mb');
   } 
+
+  if (hasHeldItem) {
+    // helper.msgDebugger(`HeldItem = ${hasHeldItem}`)
+    candidates.add(rarityBallWithHeldItemMap[rarity]);
+  } 
+
+  if (streak % rarityStreakMap[rarity] == rarityStreakMap[rarity]-1) {
+    // helper.msgDebugger(`${rarity} Streak = ${streak}`);
+    candidates.add(rarityBallWithStreakMap[rarity]);
+  } 
+
+  if (hasTeamLogo && ballNameWithTeamLogoMap[todayBall] != '') {
+    // helper.msgDebugger(`Teamlogo = ${hasTeamLogo}`)
+    candidates.add(mappedTeamBall);
+  } 
+
+  let candidateList = Array.from(candidates)
+
+  if (candidateList.length > 0) {
+    targetCustomId = candidateList.reduce((best, cur) => {
+      const bestPriority = ballPriority[best] || 0;
+      const curPriority = ballPriority[cur] || 0;
+      return curPriority > bestPriority ? cur : best;
+    }, candidateList[0]);
+  }
 
   bIndex = buttons.findIndex(b => b.customId === targetCustomId);
   if (bIndex === -1) bIndex = buttons.findIndex(b => b.customId === 'pb');
