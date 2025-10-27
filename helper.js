@@ -2,9 +2,10 @@ function messageExtractor(message) {
   let embedTitle = message.embeds[0]?.title ?? 'empty_title';
   let embedDesc = message.embeds[0]?.description ?? 'empty_description';
   let embedAuthor = message.embeds[0]?.author?.name ?? 'empty_author';
-  let embedFooter = message.embeds[0]?.footer?.text ??'empty_footer'
+  let embedFooter = message.embeds[0]?.footer?.text ??'empty_footer';
+  let image_url = message.embeds[0]?.image?.url ?? 'empty_image';
 
-  return [embedTitle, embedDesc, embedAuthor, embedFooter]
+  return [embedTitle, embedDesc, embedAuthor, embedFooter, image_url]
 }
 
 function msgLogger(msg) {

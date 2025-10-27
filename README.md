@@ -16,6 +16,8 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 ## 📜 Changelog
 
 ### 🔗 Versions
+[2.0.0](#v200)
+
 [1.8.5](#v185) | [1.8.4](#v184) | [1.8.3](#v183) | [1.8.2](#v182) | [1.8.1](#v181) | [1.8.0](#v180)
 
 [1.7.1](#v171) | [1.7.0](#v170)
@@ -29,6 +31,13 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 [1.3.0](#v130)
 
 [1.2.0](#v120)
+
+### [v2.0.0] - 2025-10-20 <a id="v200"></a>
+
+#### Added
+- 🧠 **Added ONNX model for CAPTCHA verification**  
+  Integrated a new `.onnx` model to automatically verify CAPTCHA challenges, improving automation reliability.
+---
 
 ---
 

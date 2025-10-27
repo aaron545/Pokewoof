@@ -1,4 +1,5 @@
 const helper = require('./helper');
+const { CaptchaAI } = require('./captcha.js');
 const { mustCatch, teamName } = require('./config.json');
 
 // for buying more balls automatically
@@ -110,60 +111,6 @@ async function tryClickButton(message, pos = {X: 0, Y: 0}, retries = 5, delayMs 
   return false;
 }
 
-async function checkMessageCreate(message, client){
-  let [title, desc, embedAuthor, footer] = helper.messageExtractor(message);
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-  if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
-    if (desc.includes("found a wild")){
-      const [rarity, streak] = helper.extractWildPokemonInfoByFooter(footer)
-      const [pokemonName, hasHeldItem, hasTeamLogo] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId)
-      helper.msgLogger(`Rarity wild pokemon is ${rarity}`)
-      await delay(800);
-      catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, hasTeamLogo)
-    }
-    // Faction 
-    if (embedAuthor.includes(`Team ${teamName} — Headquarters`)) {
-      [teamLogoId, todayBall] = helper.parseFaction(desc);
-      helper.msgLogger(`Team's ID is ${teamLogoId}`)
-      helper.msgLogger(`Today's ball is ${todayBall}`)
-    }
-  }
-}
-
-async function checkMessageUpdate(message, client){
-  let [title, desc, embedAuthor, footer] = helper.messageExtractor(message);
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-  if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
-    if (desc.includes("Oh! A bite!")) {
-      helper.msgLogger("Oh! A bite!!")
-      await delay(400);
-      tryClickButton(message);
-    }
-    if (desc.includes("fished a wild")){
-      await delay(800);
-      const [pokemonName, , ] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId)
-      catchFish(message, pokemonName)
-    }
-    if (footer.includes("Balls left") && !desc.includes("fished a wild")) {
-      ballsLeft = helper.parseBalls(footer)
-      Object.entries(ballsLeft).forEach(([ball, count]) => {
-        helper.msgDebugger(`${ball}: ${count}`)
-      });
-      for (const { name, id, threshold, amount } of ballConfig) {
-        if (ballsLeft[name] <= threshold) {
-          helper.msgLogger(`${name} is running low (${ballsLeft[name]} left), buying more automatically...`);
-          await delay(2500);
-          const channel = client.channels.cache.get(message.channelId);
-          safeSend(channel, `;s b ${id} ${amount}`);
-          break; // ✅ 防止同時買多種球
-        }
-      }
-    }
-  }
-}
-
 async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, hasTeamLogo) {
   let buttons = message.components?.[0]?.components ?? [];
 
@@ -248,6 +195,71 @@ async function catchFish(message, pokemonName) {
     const posY = Math.floor(bIndex / 5);
     const posX = bIndex % 5;
     tryClickButton(message, { X: posX, Y: posY });
+  }
+}
+
+async function captchaSolve(img_path) {
+  const captchaAI = await new CaptchaAI("./model/captcha.onnx");
+  const result = await captchaAI.predict(image_url);
+  return result;
+}
+
+async function checkMessageCreate(message, client){
+  let [title, desc, embedAuthor, footer, image_url] = helper.messageExtractor(message);
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
+    if (desc.includes("found a wild")){
+      const [rarity, streak] = helper.extractWildPokemonInfoByFooter(footer);
+      const [pokemonName, hasHeldItem, hasTeamLogo] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId);
+      helper.msgLogger(`Rarity wild pokemon is ${rarity}`);
+      await delay(800);
+      catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, hasTeamLogo);
+    }
+    // Faction 
+    if (embedAuthor.includes(`Team ${teamName} — Headquarters`)) {
+      [teamLogoId, todayBall] = helper.parseFaction(desc);
+      helper.msgLogger(`Team's ID is ${teamLogoId}`);
+      helper.msgLogger(`Today's ball is ${todayBall}`);
+    }
+    if (title === "A wild Captcha appeared!"){
+      const result = captchaSolve(image_url);
+      const channel = client.channels.cache.get(message.channelId);
+      safeSend(channel, result);
+    }
+  }
+}
+
+async function checkMessageUpdate(message, client){
+  let [title, desc, embedAuthor, footer, image_url] = helper.messageExtractor(message);
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
+    if (desc.includes("Oh! A bite!")) {
+      helper.msgLogger("Oh! A bite!!")
+      await delay(400);
+      tryClickButton(message);
+    }
+    if (desc.includes("fished a wild")){
+      await delay(800);
+      const [pokemonName, , ] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId)
+      catchFish(message, pokemonName)
+    }
+    if (footer.includes("Balls left") && !desc.includes("fished a wild")) {
+      ballsLeft = helper.parseBalls(footer)
+      Object.entries(ballsLeft).forEach(([ball, count]) => {
+        helper.msgDebugger(`${ball}: ${count}`)
+      });
+      for (const { name, id, threshold, amount } of ballConfig) {
+        if (ballsLeft[name] <= threshold) {
+          helper.msgLogger(`${name} is running low (${ballsLeft[name]} left), buying more automatically...`);
+          await delay(2500);
+          const channel = client.channels.cache.get(message.channelId);
+          safeSend(channel, `;s b ${id} ${amount}`);
+          break; // Prevent buying multiple balls at the same time
+        }
+      }
+    }
   }
 }
 
