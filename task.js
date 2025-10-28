@@ -198,8 +198,17 @@ async function catchFish(message, pokemonName) {
   }
 }
 
-async function captchaSolve(img_path) {
-  const captchaAI = await new CaptchaAI("./model/captcha.onnx");
+let captchaAIInstance = null;
+
+async function getCaptchaAI() {
+  if (!captchaAIInstance) {
+    captchaAIInstance = new CaptchaAI("./model/captcha.onnx");
+  }
+  return captchaAIInstance;
+}
+
+async function captchaSolve(image_url) {
+  const captchaAI = await getCaptchaAI();
   const result = await captchaAI.predict(image_url);
   return result;
 }
@@ -223,8 +232,11 @@ async function checkMessageCreate(message, client){
       helper.msgLogger(`Today's ball is ${todayBall}`);
     }
     if (title === "A wild Captcha appeared!"){
-      const result = captchaSolve(image_url);
+      helper.msgLogger("A wild Captcha appeared!");
+      const result = await captchaSolve(image_url);
       const channel = client.channels.cache.get(message.channelId);
+      helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
+      await delay(5000);
       safeSend(channel, result);
     }
   }
@@ -236,14 +248,14 @@ async function checkMessageUpdate(message, client){
 
   if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
     if (desc.includes("Oh! A bite!")) {
-      helper.msgLogger("Oh! A bite!!")
+      helper.msgLogger("Oh! A bite!!");
       await delay(400);
       tryClickButton(message);
     }
     if (desc.includes("fished a wild")){
       await delay(800);
-      const [pokemonName, , ] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId)
-      catchFish(message, pokemonName)
+      const [pokemonName, , ] = helper.extractWildPokemonInfoByDesc(desc, teamLogoId);
+      catchFish(message, pokemonName);
     }
     if (footer.includes("Balls left") && !desc.includes("fished a wild")) {
       ballsLeft = helper.parseBalls(footer)
@@ -263,4 +275,4 @@ async function checkMessageUpdate(message, client){
   }
 }
 
-module.exports = { tryClickButton, checkMessageCreate, checkMessageUpdate };
+module.exports = { tryClickButton, checkMessageCreate, checkMessageUpdate, safeSend };
