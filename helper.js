@@ -68,6 +68,7 @@ function extractWildPokemonInfoByFooter(footer) {
 
 function extractWildPokemonInfoByDesc(desc, teamLogoId) {
   // Pokemon's name
+  let pokemonName = ''
   const nameMatch = desc.match(/a wild .*?\*\*(.+?)\*\*!/);
   if (nameMatch) {
     pokemonName = nameMatch[1];

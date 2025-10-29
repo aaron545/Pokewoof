@@ -1,6 +1,6 @@
 const helper = require('./helper');
 const { CaptchaAI } = require('./captcha.js');
-const { mustCatch, teamName } = require('./config.json');
+const { mustCatch, teamName, autoCatchchannelId, authorWhiteList } = require('./config.json');
 
 // for buying more balls automatically
 const ballConfig = [
@@ -77,14 +77,49 @@ const superRareSet = new Set(superRareList.map(x => x.toLowerCase()));
 const legendarySet = new Set(legendaryList.map(x => x.toLowerCase()));
 // end for function catchFish
 
-let todayBall = ''
-let teamLogoId = ''
+let todayBall = '';
+let teamLogoId = '';
+
+let autoCatch = false;
+
+function randomDelay(base, bias = 0) {
+  const time = base + bias * (Math.random() * 2 - 1);
+  helper.msgDebugger(`sleep time = ${time}`);
+  return new Promise(resolve => setTimeout(resolve, time));
+}
 
 function safeSend(channel, content) {
   return channel.send(content).catch(err => {
     helper.msgLogger(`❌ Failed to send "${content}" to channel ${channel.id}:`);
     helper.msgLogger(err);
   });
+}
+
+async function startAutoCatch(client) {
+  const channel = client.channels.cache.get(autoCatchchannelId);
+  const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+  while (true) {
+    if (!autoCatch) {
+      await delay(10 * 1000); // 停止時仍每10秒檢查一次
+      continue;
+    }
+
+    await safeSend(channel, ";p");
+    await randomDelay(3000, 500);
+
+    if (!autoCatch) continue;
+
+    await safeSend(channel, ";f");
+    await randomDelay(9500, 500);
+
+    if (!autoCatch) continue;
+
+    await safeSend(channel, ";p");
+    await randomDelay(3000, 500);
+
+    await delay(12 * 1000); // 每10秒循環一次
+  }
 }
 
 async function tryClickButton(message, pos = {X: 0, Y: 0}, retries = 5, delayMs = 300) {
@@ -231,14 +266,36 @@ async function checkMessageCreate(message, client){
       helper.msgLogger(`Team's ID is ${teamLogoId}`);
       helper.msgLogger(`Today's ball is ${todayBall}`);
     }
-    if (title === "A wild Captcha appeared!"){
+    // Captcha
+    if (title === "A wild Captcha appeared!") {
+      autoCatch = false;
       helper.msgLogger("A wild Captcha appeared!");
       const result = await captchaSolve(image_url);
       const channel = client.channels.cache.get(message.channelId);
       helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
       await delay(5000);
       safeSend(channel, result);
+      await delay(1000);
     }
+  }
+  // Auto catch
+  if (message.channelId === autoCatchchannelId && !authorWhiteList.includes(message.author.username) && message.author.username !== client.user.username) {
+    autoCatch = false;
+    helper.msgLogger(`Someone comes, Autocatch will be set ${autoCatch}!!`);
+  }
+  if (message.author.username === client.user.username) {
+    if (message.content.includes(";clan stats") || message.content.includes("repel")) {
+      autoCatch = true;
+      helper.msgLogger(`Autocatch will be set ${autoCatch}!!`);
+    }
+    if (message.content.includes(";wb") || message.content.includes(";i") ) {
+      autoCatch = false;
+      helper.msgLogger(`Autocatch will be set ${autoCatch}!!`);
+    }
+  }
+  if (desc.includes("reached the daily catch limit")) {
+      autoCatch = false;
+      helper.msgLogger(`Reach limit!!, Autocatch will be set ${autoCatch}!!`);
   }
 }
 
@@ -272,7 +329,29 @@ async function checkMessageUpdate(message, client){
         }
       }
     }
+    // Captcha
+    if (title === "A wild Captcha appeared!"){
+      autoCatch = false;
+      helper.msgLogger("A wild Captcha appeared!");
+      const result = await captchaSolve(image_url);
+      const channel = client.channels.cache.get(message.channelId);
+      helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
+      await delay(5000);
+      safeSend(channel, result);
+      await delay(1000);
+    }
+    // success to solve captcha
+    if (message.content.includes("Thank you, you may continue playing!")) {
+      helper.msgLogger("Success to solve captcha!!");
+      autoCatch = true;
+    }
   }
 }
 
-module.exports = { tryClickButton, checkMessageCreate, checkMessageUpdate, safeSend };
+module.exports = { 
+  tryClickButton, 
+  checkMessageCreate, 
+  checkMessageUpdate, 
+  safeSend, 
+  startAutoCatch,
+};
