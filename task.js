@@ -70,7 +70,7 @@ const superRareList = [
   "Carracosta","Dracovish","Kabutops","Lapras","Omastar",
   "Seismitoad","Wailord","Walrein",
 ];
-const legendaryList = ["Suicune"];
+const legendaryList = ["Suicune","Kyogre"];
 
 const rareSet = new Set(rareList.map(x => x.toLowerCase()));
 const superRareSet = new Set(superRareList.map(x => x.toLowerCase()));
@@ -81,6 +81,7 @@ let todayBall = '';
 let teamLogoId = '';
 
 let autoCatch = false;
+let autoFish = false;
 
 function randomDelay(base, bias = 0) {
   const time = base + bias * (Math.random() * 2 - 1);
@@ -100,25 +101,37 @@ async function startAutoCatch(client) {
   const delay = (ms) => new Promise(r => setTimeout(r, ms));
 
   while (true) {
-    if (!autoCatch) {
-      await delay(10 * 1000); // 停止時仍每10秒檢查一次
+    // 若兩者都關閉，就每12秒檢查一次狀態
+    if (!autoCatch && !autoFish) {
+      await delay(12 * 1000);
       continue;
     }
 
-    await safeSend(channel, ";p");
-    await randomDelay(3000, 500);
+    // 🪣 autoCatch 開啟（優先執行）
+    if (autoCatch) {
+      await safeSend(channel, ";p");
+      await randomDelay(4500, 1500);
 
-    if (!autoCatch) continue;
+      if (!autoCatch) continue;
 
-    await safeSend(channel, ";f");
-    await randomDelay(9500, 500);
+      await safeSend(channel, ";f");
+      await randomDelay(10500, 1500);
 
-    if (!autoCatch) continue;
+      if (!autoCatch) continue;
 
-    await safeSend(channel, ";p");
-    await randomDelay(3000, 500);
+      await safeSend(channel, ";p");
+      await randomDelay(4500, 1500);
 
-    await delay(12 * 1000); // 每10秒循環一次
+      await delay(12 * 1000); // 每12秒循環
+      continue;
+    }
+
+    // 🎣 autoCatch 關閉但 autoFish 開啟
+    if (autoFish) {
+      await safeSend(channel, ";f");
+      await randomDelay(70*1000, 35*1000);
+      continue;
+    }
   }
 }
 
@@ -250,6 +263,8 @@ async function captchaSolve(image_url) {
 
 async function checkMessageCreate(message, client){
   let [title, desc, embedAuthor, footer, image_url] = helper.messageExtractor(message);
+  let channel = ''
+  const mentionUser = `<@${client.user.id}>`;
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
@@ -269,9 +284,10 @@ async function checkMessageCreate(message, client){
     // Captcha
     if (title === "A wild Captcha appeared!") {
       autoCatch = false;
+      autoFish = false;
       helper.msgLogger("A wild Captcha appeared!");
       const result = await captchaSolve(image_url);
-      const channel = client.channels.cache.get(message.channelId);
+      channel = client.channels.cache.get(message.channelId);
       helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
       await delay(5000);
       safeSend(channel, result);
@@ -281,21 +297,56 @@ async function checkMessageCreate(message, client){
   // Auto catch
   if (message.channelId === autoCatchchannelId && !authorWhiteList.includes(message.author.username) && message.author.username !== client.user.username) {
     autoCatch = false;
+    autoFish = false;
     helper.msgLogger(`Someone comes, Autocatch will be set ${autoCatch}!!`);
   }
-  if (message.author.username === client.user.username) {
+  if (message.channelId === autoCatchchannelId && message.author.username === client.user.username) {
     if (message.content.includes(";clan stats") || message.content.includes("repel")) {
       autoCatch = true;
       helper.msgLogger(`Autocatch will be set ${autoCatch}!!`);
     }
     if (message.content.includes(";wb") || message.content.includes(";i") ) {
       autoCatch = false;
-      helper.msgLogger(`Autocatch will be set ${autoCatch}!!`);
+      autoFish = false;
+      helper.msgLogger(`Autocatch and Autofish will be set ${autoCatch}!!`);
+    }
+    if (message.content.includes(";f shop") ) {
+      autoFish = true;
+      helper.msgLogger(`Autofish will be set ${autoFish}!!`);
     }
   }
   if (desc.includes("reached the daily catch limit")) {
       autoCatch = false;
-      helper.msgLogger(`Reach limit!!, Autocatch will be set ${autoCatch}!!`);
+      autoFish = true;
+      helper.msgLogger(`Reach limit!!, autocatch will be set ${autoCatch}!!`);
+      helper.msgLogger(`AutoFish will be set ${autoFish}!!`);
+  }
+  // egg
+  if (message.content.includes("your egg is ready to hatch!") && message.content.includes(mentionUser)) {
+    const wasAutoCatch = autoCatch; // 🔹記錄原本狀態
+    const wasAutoFish = autoFish;
+    helper.msgLogger("Egg is ready to hatch!!");
+    if (wasAutoCatch || wasAutoFish) {
+      autoCatch = false;
+      autoFish = false;
+      helper.msgLogger(`Temporarily disabling autoCatch (${wasAutoCatch}) and autoFish (${wasAutoFish})`);
+    }
+
+    await delay(3000);
+    const channel = client.channels.cache.get(message.channelId);
+    safeSend(channel, ";egg hatch");
+
+    await delay(4000);
+    safeSend(channel, ";egg hold");
+
+    helper.msgLogger("Egg is held again!!");
+
+    // 🔹如果原本是開的才開回去
+    if (wasAutoCatch || wasAutoFish) {
+      autoCatch = wasAutoCatch;
+      autoFish = wasAutoFish;
+      helper.msgLogger(`Restoring autoCatch (${autoCatch}) and autoFish (${autoFish})`);
+    }
   }
 }
 
@@ -332,6 +383,7 @@ async function checkMessageUpdate(message, client){
     // Captcha
     if (title === "A wild Captcha appeared!"){
       autoCatch = false;
+      autoFish = false;
       helper.msgLogger("A wild Captcha appeared!");
       const result = await captchaSolve(image_url);
       const channel = client.channels.cache.get(message.channelId);

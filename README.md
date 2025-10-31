@@ -36,6 +36,21 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 [1.2.0](#v120)
 
+### [v2.3.0] - 2025-10-29 <a id="v230"></a>
+
+#### Added
+- 🎣 **Added Auto-Fish System**  
+  Introduced an automated fishing system. When the daily catch (`autoCatch`) limit is reached, the bot will automatically switch to fishing mode, or users can manually enable it with a command.  
+
+- 🥚 **Added Auto-Egg Hatching**  
+  The bot now records the states of both `autoCatch` and `autoFish`, temporarily disables them while hatching an egg, and restores their previous states afterward.  
+
+#### Updated
+- 🐋 **Updated Legendary Pokémon List**  
+  Added **Kyogre** to the Legendary Pokémon list.
+
+---
+
 ### [v2.2.0] - 2025-10-29 <a id="v220"></a>
 
 #### Added
