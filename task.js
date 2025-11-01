@@ -293,6 +293,12 @@ async function checkMessageCreate(message, client){
       safeSend(channel, result);
       await delay(1000);
     }
+    if (desc.includes("reached the daily catch limit")) {
+      autoCatch = false;
+      autoFish = true;
+      helper.msgLogger(`Reach limit!!, autocatch will be set ${autoCatch}!!`);
+      helper.msgLogger(`AutoFish will be set ${autoFish}!!`);
+    }
   }
   // Auto catch
   if (message.channelId === autoCatchchannelId && !authorWhiteList.includes(message.author.username) && message.author.username !== client.user.username) {
@@ -314,12 +320,6 @@ async function checkMessageCreate(message, client){
       autoFish = true;
       helper.msgLogger(`Autofish will be set ${autoFish}!!`);
     }
-  }
-  if (desc.includes("reached the daily catch limit")) {
-      autoCatch = false;
-      autoFish = true;
-      helper.msgLogger(`Reach limit!!, autocatch will be set ${autoCatch}!!`);
-      helper.msgLogger(`AutoFish will be set ${autoFish}!!`);
   }
   // egg
   if (message.content.includes("your egg is ready to hatch!") && message.content.includes(mentionUser)) {

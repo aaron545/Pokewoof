@@ -16,6 +16,9 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 ## 📜 Changelog
 
 ### 🔗 Versions
+
+[2.3.1](#v231) | [2.3.0](#v230)
+
 [2.2.0](#v220)
 
 [2.1.0](#v210)
@@ -36,7 +39,15 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 [1.2.0](#v120)
 
-### [v2.3.0] - 2025-10-29 <a id="v230"></a>
+### [v2.3.1] - 2025-11-01 <a id="v231"></a>
+
+#### Fixed
+- 🐞 **Fixed Auto-Fish Activation Bug**  
+  Resolved an issue where the bot would occasionally enable `autoFish` unexpectedly without user command or trigger.
+
+---
+
+### [v2.3.0] - 2025-10-31 <a id="v230"></a>
 
 #### Added
 - 🎣 **Added Auto-Fish System**  
