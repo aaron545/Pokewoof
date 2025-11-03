@@ -295,9 +295,7 @@ async function checkMessageCreate(message, client){
     }
     if (desc.includes("reached the daily catch limit")) {
       autoCatch = false;
-      autoFish = true;
       helper.msgLogger(`Reach limit!!, autocatch will be set ${autoCatch}!!`);
-      helper.msgLogger(`AutoFish will be set ${autoFish}!!`);
     }
   }
   // Auto catch
