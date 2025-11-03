@@ -80,6 +80,8 @@ const legendarySet = new Set(legendaryList.map(x => x.toLowerCase()));
 let todayBall = '';
 let teamLogoId = '';
 
+let wasAutoCatch = false;
+let wasAutoFish = false;
 let autoCatch = false;
 let autoFish = false;
 
@@ -283,6 +285,8 @@ async function checkMessageCreate(message, client){
     }
     // Captcha
     if (title === "A wild Captcha appeared!") {
+      wasAutoCatch = autoCatch; // 🔹記錄原本狀態
+      wasAutoFish = autoFish;
       autoCatch = false;
       autoFish = false;
       helper.msgLogger("A wild Captcha appeared!");
@@ -321,8 +325,8 @@ async function checkMessageCreate(message, client){
   }
   // egg
   if (message.content.includes("your egg is ready to hatch!") && message.content.includes(mentionUser)) {
-    const wasAutoCatch = autoCatch; // 🔹記錄原本狀態
-    const wasAutoFish = autoFish;
+    wasAutoCatch = autoCatch; // 🔹記錄原本狀態
+    wasAutoFish = autoFish;
     helper.msgLogger("Egg is ready to hatch!!");
     if (wasAutoCatch || wasAutoFish) {
       autoCatch = false;
@@ -380,6 +384,8 @@ async function checkMessageUpdate(message, client){
     }
     // Captcha
     if (title === "A wild Captcha appeared!"){
+      wasAutoCatch = autoCatch; // 🔹記錄原本狀態
+      wasAutoFish = autoFish;
       autoCatch = false;
       autoFish = false;
       helper.msgLogger("A wild Captcha appeared!");
@@ -393,7 +399,11 @@ async function checkMessageUpdate(message, client){
     // success to solve captcha
     if (message.content.includes("Thank you, you may continue playing!")) {
       helper.msgLogger("Success to solve captcha!!");
-      autoCatch = true;
+      if (wasAutoCatch || wasAutoFish) {
+        autoCatch = wasAutoCatch;
+        autoFish = wasAutoFish;
+        helper.msgLogger(`Restoring autoCatch (${autoCatch}) and autoFish (${autoFish})`);
+      }
     }
   }
 }

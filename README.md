@@ -17,7 +17,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 ### 🔗 Versions
 
-[2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
+[2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
 
 [2.2.0](#v220)
 
@@ -39,7 +39,15 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 [1.2.0](#v120)
 
-### [v2.3.2] - 2025-11-02 <a id="v232"></a>
+### [v2.3.3] - 2025-11-03 <a id="v233"></a>
+
+#### Fixed
+- 🧩 **Restored Auto States After CAPTCHA Solve**  
+  After completing CAPTCHA verification, the bot now correctly restores the previous states of both `autoCatch` and `autoFish`, ensuring continuity of automated actions.
+
+---
+
+### [v2.3.2] - 2025-11-03 <a id="v232"></a>
 
 #### Changed
 - ⚙️ **Modified Auto-Fish Behavior**  
