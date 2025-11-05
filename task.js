@@ -335,7 +335,7 @@ async function checkMessageCreate(message, client){
       helper.msgLogger(`Temporarily disabling autoCatch (${wasAutoCatch}) and autoFish (${wasAutoFish})`);
     }
 
-    await delay(3000);
+    await delay(4000);
     const channel = client.channels.cache.get(message.channelId);
     safeSend(channel, ";egg hatch");
 

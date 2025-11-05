@@ -39,7 +39,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 [1.2.0](#v120)
 
-### [v2.3.4] - 2025-11-03 <a id="v234"></a>
+### [v2.3.4] - 2025-11-05 <a id="v234"></a>
 
 #### Fixed
 - 😴 **Resolved Post-CAPTCHA Idle Issue**  
