@@ -17,7 +17,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 ### 🔗 Versions
 
-[2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
+[2.3.4](#v234) | [2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
 
 [2.2.0](#v220)
 
@@ -38,6 +38,18 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 [1.3.0](#v130)
 
 [1.2.0](#v120)
+
+### [v2.3.4] - 2025-11-03 <a id="v234"></a>
+
+#### Fixed
+- 😴 **Resolved Post-CAPTCHA Idle Issue**  
+  Fixed an issue where the bot would stop functioning after solving a CAPTCHA instead of resuming normal catching behavior.  
+
+#### Updated
+- 🥚 **Extended Egg Hatching Delay**  
+  Increased the delay duration during egg hatching to ensure reliable completion and prevent missed hatches.
+
+---
 
 ### [v2.3.3] - 2025-11-03 <a id="v233"></a>
 

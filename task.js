@@ -290,6 +290,7 @@ async function checkMessageCreate(message, client){
       autoCatch = false;
       autoFish = false;
       helper.msgLogger("A wild Captcha appeared!");
+      helper.msgDebugger(`wasAutoCatch = ${wasAutoCatch}, wasAutoFish = ${wasAutoFish}`);
       const result = await captchaSolve(image_url);
       channel = client.channels.cache.get(message.channelId);
       helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
@@ -384,11 +385,10 @@ async function checkMessageUpdate(message, client){
     }
     // Captcha
     if (title === "A wild Captcha appeared!"){
-      wasAutoCatch = autoCatch; // 🔹記錄原本狀態
-      wasAutoFish = autoFish;
       autoCatch = false;
       autoFish = false;
       helper.msgLogger("A wild Captcha appeared!");
+      helper.msgDebugger(`wasAutoCatch = ${wasAutoCatch}, wasAutoFish = ${wasAutoFish}`);
       const result = await captchaSolve(image_url);
       const channel = client.channels.cache.get(message.channelId);
       helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
@@ -399,6 +399,7 @@ async function checkMessageUpdate(message, client){
     // success to solve captcha
     if (message.content.includes("Thank you, you may continue playing!")) {
       helper.msgLogger("Success to solve captcha!!");
+      helper.msgDebugger(`wasAutoCatch = ${wasAutoCatch}, wasAutoFish = ${wasAutoFish}`);
       if (wasAutoCatch || wasAutoFish) {
         autoCatch = wasAutoCatch;
         autoFish = wasAutoFish;
