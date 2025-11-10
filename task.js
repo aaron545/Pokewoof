@@ -5,8 +5,8 @@ const { mustCatch, teamName, autoCatchchannelId, authorWhiteList } = require('./
 // for buying more balls automatically
 const ballConfig = [
   { name: "Pokeball", id: 1, threshold: 10, amount: 100 },
-  { name: "Greatball", id: 2, threshold: 6, amount: 60 },
-  { name: "Ultraball", id: 3, threshold: 3, amount: 30 },
+  { name: "Greatball", id: 2, threshold: 6, amount: 88 },
+  { name: "Ultraball", id: 3, threshold: 3, amount: 50 },
 ];
 // end for buying more balls automatically
 
@@ -70,7 +70,7 @@ const superRareList = [
   "Carracosta","Dracovish","Kabutops","Lapras","Omastar",
   "Seismitoad","Wailord","Walrein",
 ];
-const legendaryList = ["Suicune","Kyogre"];
+const legendaryList = ["Suicune","Kyogre","Paldean-Wooper"];
 
 const rareSet = new Set(rareList.map(x => x.toLowerCase()));
 const superRareSet = new Set(superRareList.map(x => x.toLowerCase()));
@@ -131,7 +131,7 @@ async function startAutoCatch(client) {
     // 🎣 autoCatch 關閉但 autoFish 開啟
     if (autoFish) {
       await safeSend(channel, ";f");
-      await randomDelay(70*1000, 35*1000);
+      await randomDelay(60*1000, 25*1000);
       continue;
     }
   }

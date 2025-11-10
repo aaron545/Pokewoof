@@ -39,6 +39,14 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 [1.2.0](#v120)
 
+### [v2.3.5] - 2025-11-10 <a id="v235"></a>
+
+#### Updated
+- 🎣 **Adjusted Auto-Fish Delay Timing**  
+  Modified the auto-fishing delay to make the process more efficient and natural.  
+
+---
+
 ### [v2.3.4] - 2025-11-05 <a id="v234"></a>
 
 #### Fixed
