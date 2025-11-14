@@ -13,15 +13,15 @@ const ballConfig = [
 // for function catchPokemon
 
 const ballPriority = {
-  pb: 2,
-  gb: 1,
+  pb: 1,
+  gb: 2,
   ub: 3,
   prb: 4,
   mb: 5,
 };
 
 const rarityBallMap = {
-  Common: 'gb',
+  Common: 'pb',
   Uncommon: 'gb',
   Rare: 'gb',
   SuperRare: 'ub',
@@ -29,7 +29,7 @@ const rarityBallMap = {
   Shiny: 'mb',
 };
 const rarityBallWithStreakMap = {
-  Common: 'gb',
+  Common: 'pb',
   Uncommon: 'gb',
   Rare: 'ub',
   SuperRare: 'prb',
@@ -189,11 +189,6 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
     candidates.add(rarityBallWithStreakMap[rarity]);
   } 
 
-  if (hasTeamLogo && ballNameWithTeamLogoMap[todayBall] != '') {
-    // helper.msgDebugger(`Teamlogo = ${hasTeamLogo}`)
-    candidates.add(ballNameWithTeamLogoMap[todayBall]);
-  } 
-
   let candidateList = Array.from(candidates)
 
   if (candidateList.length > 0) {
@@ -203,6 +198,11 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
       return curPriority > bestPriority ? cur : best;
     }, candidateList[0]);
   }
+
+  if (hasTeamLogo && ballNameWithTeamLogoMap[todayBall] != '') {
+    // helper.msgDebugger(`Teamlogo = ${hasTeamLogo}`)
+    targetCustomId = ballNameWithTeamLogoMap[todayBall];
+  } 
 
   bIndex = buttons.findIndex(b => b.customId === targetCustomId);
   if (bIndex === -1) bIndex = buttons.findIndex(b => b.customId === 'pb');
