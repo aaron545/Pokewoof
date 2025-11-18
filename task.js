@@ -6,7 +6,8 @@ const { mustCatch, teamName, autoCatchchannelId, authorWhiteList } = require('./
 const ballConfig = [
   { name: "Pokeball", id: 1, threshold: 10, amount: 100 },
   { name: "Greatball", id: 2, threshold: 6, amount: 88 },
-  { name: "Ultraball", id: 3, threshold: 3, amount: 50 },
+  { name: "Ultraball", id: 3, threshold: 5, amount: 50 },
+  { name: "Masterball", id: 4, threshold: 2, amount: 2 },
 ];
 // end for buying more balls automatically
 

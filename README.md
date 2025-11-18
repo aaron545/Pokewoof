@@ -17,7 +17,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 ### 🔗 Versions
 
-[2.3.6](#v236) | [2.3.5](#v235) | [2.3.4](#v234) | [2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
+[2.3.7](#v237) | [2.3.6](#v236) | [2.3.5](#v235) | [2.3.4](#v234) | [2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
 
 [2.2.0](#v220)
 
@@ -39,10 +39,19 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 [1.2.0](#v120)
 
+### [v2.3.7] - 2025-11-18 <a id="v237"></a>
+
+#### Added
+- 🛒 **Added Automatic Masterball Purchase System**  
+  Implemented an automatic purchasing mechanism for **Masterballs**, removing the need for manual buying.  
+  The bot now checks your ball inventory and purchases more when quantities fall below the configured threshold.
+
+---
+
 ### [v2.3.6] - 2025-11-14 <a id="v236"></a>
 #### Fixed
 
-- 🛠️ Fixed Pokéball Selection Logic
+- 🛠️ **Fixed Pokéball Selection Logic**
   Updated the ball selection flow to ensure that TeamLogo balls always take priority.
 
 ### [v2.3.5] - 2025-11-10 <a id="v235"></a>
