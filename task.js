@@ -7,7 +7,7 @@ const ballConfig = [
   { name: "Pokeball", id: 1, threshold: 10, amount: 100 },
   { name: "Greatball", id: 2, threshold: 6, amount: 88 },
   { name: "Ultraball", id: 3, threshold: 5, amount: 50 },
-  { name: "Masterball", id: 4, threshold: 2, amount: 2 },
+  { name: "Masterball", id: 4, threshold: 1, amount: 2 },
 ];
 // end for buying more balls automatically
 
@@ -200,7 +200,7 @@ async function catchPokemon(message, rarity, streak, pokemonName, hasHeldItem, h
     }, candidateList[0]);
   }
 
-  if (hasTeamLogo && ballNameWithTeamLogoMap[todayBall] != '') {
+  if (targetCustomId != 'mb' && hasTeamLogo && ballNameWithTeamLogoMap[todayBall] != '') {
     // helper.msgDebugger(`Teamlogo = ${hasTeamLogo}`)
     targetCustomId = ballNameWithTeamLogoMap[todayBall];
   } 
@@ -295,7 +295,7 @@ async function checkMessageCreate(message, client){
       const result = await captchaSolve(image_url);
       channel = client.channels.cache.get(message.channelId);
       helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
-      await delay(5000);
+      await delay(10000);
       safeSend(channel, result);
       await delay(1000);
     }
@@ -393,7 +393,7 @@ async function checkMessageUpdate(message, client){
       const result = await captchaSolve(image_url);
       const channel = client.channels.cache.get(message.channelId);
       helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
-      await delay(5000);
+      await delay(10000);
       safeSend(channel, result);
       await delay(1000);
     }

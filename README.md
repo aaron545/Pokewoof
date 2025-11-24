@@ -6,16 +6,20 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 ## Config detail
 - **token**: please refer to this [video](https://youtu.be/_4s2DpUhLGQ?si=Y_SXTWQzs9s-n6D8&t=180) to get your Discord token.  
 - **guildId**: the guild on which you want the bot to spam.  
-- **ownchannelId**: "please use private channel, don't use public channel."  
+- **ownchannelId**: "please use private channel, don't use public channel."
+- **autoCatchchannelId**: "autoCatchchannelId"
 - **channelWhiteList**: an array with channelId.  
 - **mustCatch**: an array of Pokémon names that the bot **must catch** (commonly used for event Pokémon).  
 - **teamName**: your faction's name, like Rocket, Plasma, etc.
+- **authorWhiteList**: An array unaffected by these users.
 
 ---
 
 ## 📜 Changelog
 
 ### 🔗 Versions
+
+[2.4.0](#v240)
 
 [2.3.7](#v237) | [2.3.6](#v236) | [2.3.5](#v235) | [2.3.4](#v234) | [2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
 
@@ -38,6 +42,18 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 [1.3.0](#v130)
 
 [1.2.0](#v120)
+
+### [v2.4.0] - 2025-11-14 <a id="v240"></a>
+
+#### Added
+- 🔢 **Improved Pokéball Count Parsing**  
+  Ball counts above **1,000** are now correctly recognized (e.g., `1,234` → `1234`).
+
+#### Fixed
+- 🛠️ **Masterball Priority Fix**  
+  When the selected ball is **Masterball (`mb`)**, it will **no longer be overridden** by the TeamLogo ball logic.
+
+---
 
 ### [v2.3.7] - 2025-11-18 <a id="v237"></a>
 
