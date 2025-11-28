@@ -72,12 +72,12 @@ const superRareList = [
   "Seismitoad","Wailord","Walrein",
 ];
 const diveballList = ["Cramorant","Dracovish","Kyogre","Suicune"];
-
 const masterballList = ["Keldeo-Resolute"];
 
 const rareSet = new Set(rareList.map(x => x.toLowerCase()));
 const superRareSet = new Set(superRareList.map(x => x.toLowerCase()));
 const diveballSet = new Set(diveballList.map(x => x.toLowerCase()));
+const masterballSet = new Set(masterballList.map(x => x.toLowerCase()));
 // end for function catchFish
 
 let todayBall = '';
@@ -228,7 +228,7 @@ async function catchFish(message, pokemonName) {
   let bIndex = -1;
   let targetCustomId;
 
-  if (name.includes("shiny") || name.includes("golden") || masterballList.has(name)){
+  if (name.includes("shiny") || name.includes("golden") || masterballSet.has(name)){
     targetCustomId = 'mb_fish';
   } else if (diveballSet.has(name)) {
     targetCustomId = 'db_fish';
