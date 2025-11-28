@@ -19,7 +19,7 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 ### 🔗 Versions
 
-[2.4.0](#v240)
+[2.4.1](#v241) | [2.4.0](#v240)
 
 [2.3.7](#v237) | [2.3.6](#v236) | [2.3.5](#v235) | [2.3.4](#v234) | [2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
 
@@ -43,7 +43,15 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 [1.2.0](#v120)
 
-### [v2.4.0] - 2025-11-14 <a id="v240"></a>
+### [v2.4.1] - 2025-11-28 <a id="v241"></a>
+
+#### Added
+- 🛒 **Add MasterballList for fish**  
+  Add MasterballList for fish, usually for event.
+
+---
+
+### [v2.4.0] - 2025-11-24 <a id="v240"></a>
 
 #### Added
 - 🔢 **Improved Pokéball Count Parsing**  

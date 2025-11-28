@@ -4,8 +4,8 @@ const { mustCatch, teamName, autoCatchchannelId, authorWhiteList } = require('./
 
 // for buying more balls automatically
 const ballConfig = [
-  { name: "Pokeball", id: 1, threshold: 10, amount: 100 },
-  { name: "Greatball", id: 2, threshold: 6, amount: 88 },
+  { name: "Pokeball", id: 1, threshold: 10, amount: 200 },
+  { name: "Greatball", id: 2, threshold: 8, amount: 300 },
   { name: "Ultraball", id: 3, threshold: 5, amount: 50 },
   { name: "Masterball", id: 4, threshold: 1, amount: 2 },
 ];
@@ -68,14 +68,16 @@ const rareList = [
   "Sharpedo", "Slowbro", "Tentacruel",
 ];
 const superRareList = [
-  "Carracosta","Dracovish","Kabutops","Lapras","Omastar",
+  "Carracosta","Kabutops","Lapras","Omastar",
   "Seismitoad","Wailord","Walrein",
 ];
-const legendaryList = ["Suicune","Kyogre","Paldean-Wooper"];
+const diveballList = ["Cramorant","Dracovish","Kyogre","Suicune"];
+
+const masterballList = ["Keldeo-Resolute"];
 
 const rareSet = new Set(rareList.map(x => x.toLowerCase()));
 const superRareSet = new Set(superRareList.map(x => x.toLowerCase()));
-const legendarySet = new Set(legendaryList.map(x => x.toLowerCase()));
+const diveballSet = new Set(diveballList.map(x => x.toLowerCase()));
 // end for function catchFish
 
 let todayBall = '';
@@ -106,7 +108,7 @@ async function startAutoCatch(client) {
   while (true) {
     // 若兩者都關閉，就每12秒檢查一次狀態
     if (!autoCatch && !autoFish) {
-      await delay(12 * 1000);
+      await delay(10 * 1000);
       continue;
     }
 
@@ -125,7 +127,7 @@ async function startAutoCatch(client) {
       await safeSend(channel, ";p");
       await randomDelay(4500, 1500);
 
-      await delay(12 * 1000); // 每12秒循環
+      await delay(10 * 1000); // 每10秒循環
       continue;
     }
 
@@ -226,9 +228,9 @@ async function catchFish(message, pokemonName) {
   let bIndex = -1;
   let targetCustomId;
 
-  if (name.includes("shiny") || name.includes("golden")){
+  if (name.includes("shiny") || name.includes("golden") || masterballList.has(name)){
     targetCustomId = 'mb_fish';
-  } else if (legendarySet.has(name)) {
+  } else if (diveballSet.has(name)) {
     targetCustomId = 'db_fish';
   } else if (rareSet.has(name)) {
     targetCustomId = 'gb_fish';
