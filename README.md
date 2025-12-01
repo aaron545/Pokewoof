@@ -19,6 +19,8 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 
 ### 🔗 Versions
 
+[2.5.0](#v250)
+
 [2.4.2](#v242) | [2.4.1](#v241) | [2.4.0](#v240)
 
 [2.3.7](#v237) | [2.3.6](#v236) | [2.3.5](#v235) | [2.3.4](#v234) | [2.3.3](#v233) | [2.3.2](#v232) | [2.3.1](#v231) | [2.3.0](#v230)
@@ -42,6 +44,18 @@ Edit content of `sampleconfig.json` and rename it as `config.json`.
 [1.3.0](#v130)
 
 [1.2.0](#v120)
+
+### [v2.5.0] - 2025-12-1 <a id="v250"></a>
+
+#### Added
+- 📥 **Download CAPTCHA Images for Debugging**  
+  Now the bot can download CAPTCHA images that fail prediction, allowing easier model debugging and improvement.
+
+#### Updated
+- 📝 **Refactored `messageExtractor`**  
+  Changed the function to return an **object** instead of a list for better readability and safer property access.
+
+---
 
 ### [v2.4.2] - 2025-11-28 <a id="v242"></a>
 

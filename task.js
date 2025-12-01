@@ -71,8 +71,8 @@ const superRareList = [
   "Carracosta","Kabutops","Lapras","Omastar",
   "Seismitoad","Wailord","Walrein",
 ];
-const diveballList = ["Cramorant","Dracovish","Kyogre","Suicune"];
-const masterballList = ["Keldeo-Resolute"];
+const diveballList = ["Arctovish","Cramorant","Dracovish","Kyogre","Suicune","Keldeo-Resolute"];
+const masterballList = [];
 
 const rareSet = new Set(rareList.map(x => x.toLowerCase()));
 const superRareSet = new Set(superRareList.map(x => x.toLowerCase()));
@@ -87,6 +87,9 @@ let wasAutoCatch = false;
 let wasAutoFish = false;
 let autoCatch = false;
 let autoFish = false;
+
+let pre_image_url = '';
+let pre_fileName = '';
 
 function randomDelay(base, bias = 0) {
   const time = base + bias * (Math.random() * 2 - 1);
@@ -115,19 +118,19 @@ async function startAutoCatch(client) {
     // 🪣 autoCatch 開啟（優先執行）
     if (autoCatch) {
       await safeSend(channel, ";p");
-      await randomDelay(4500, 1500);
+      await randomDelay(4000, 1000);
 
       if (!autoCatch) continue;
 
       await safeSend(channel, ";f");
-      await randomDelay(10500, 1500);
+      await randomDelay(10000, 1000);
 
       if (!autoCatch) continue;
 
       await safeSend(channel, ";p");
-      await randomDelay(4500, 1500);
+      await randomDelay(4000, 1000);
 
-      await delay(10 * 1000); // 每10秒循環
+      await randomDelay(10000, 1000); // 每10(9-11)秒循環
       continue;
     }
 
@@ -267,7 +270,7 @@ async function captchaSolve(image_url) {
 }
 
 async function checkMessageCreate(message, client){
-  let [title, desc, embedAuthor, footer, image_url] = helper.messageExtractor(message);
+  const { title, desc, embedAuthor, footer, image_url } = helper.messageExtractor(message);
   let channel = ''
   const mentionUser = `<@${client.user.id}>`;
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -295,8 +298,12 @@ async function checkMessageCreate(message, client){
       helper.msgLogger("A wild Captcha appeared!");
       helper.msgDebugger(`wasAutoCatch = ${wasAutoCatch}, wasAutoFish = ${wasAutoFish}`);
       const result = await captchaSolve(image_url);
+
+      pre_image_url = image_url;
+      pre_fileName = result + ".png";
+
       channel = client.channels.cache.get(message.channelId);
-      helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
+      helper.msgLogger(`The captcha result = ${result}, will send in 10 seconds`);
       await delay(10000);
       safeSend(channel, result);
       await delay(1000);
@@ -357,7 +364,7 @@ async function checkMessageCreate(message, client){
 }
 
 async function checkMessageUpdate(message, client){
-  let [title, desc, embedAuthor, footer, image_url] = helper.messageExtractor(message);
+  const { title, desc, embedAuthor, footer, image_url } = helper.messageExtractor(message);
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   if (message.type == 'REPLY' && message.mentions.repliedUser?.username == client.user.username) {
@@ -390,9 +397,14 @@ async function checkMessageUpdate(message, client){
     if (title === "A wild Captcha appeared!"){
       autoCatch = false;
       autoFish = false;
+      helper.downloadAndSaveImage(pre_image_url, pre_fileName) // 下載上一次錯誤的圖片
       helper.msgLogger("A wild Captcha appeared!");
       helper.msgDebugger(`wasAutoCatch = ${wasAutoCatch}, wasAutoFish = ${wasAutoFish}`);
       const result = await captchaSolve(image_url);
+
+      pre_image_url = image_url;
+      pre_fileName = result + ".png";
+
       const channel = client.channels.cache.get(message.channelId);
       helper.msgLogger(`The captcha result = ${result}, will send in 5 seconds`);
       await delay(10000);

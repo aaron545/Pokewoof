@@ -1,12 +1,19 @@
-function messageExtractor(message) {
-  let embedTitle = message.embeds[0]?.title ?? 'empty_title';
-  let embedDesc = message.embeds[0]?.description ?? 'empty_description';
-  let embedAuthor = message.embeds[0]?.author?.name ?? 'empty_author';
-  let embedFooter = message.embeds[0]?.footer?.text ??'empty_footer';
-  let image_url = message.embeds[0]?.image?.url ?? 'empty_image';
+const fs = require('fs');
+const axios = require('axios');
+const path = require('path');
 
-  return [embedTitle, embedDesc, embedAuthor, embedFooter, image_url]
+function messageExtractor(message) {
+  const embed = message.embeds[0] ?? {};
+
+  return {
+    title: embed.title ?? 'empty_title',
+    desc: embed.description ?? 'empty_description',
+    embedAuthor: embed.author?.name ?? 'empty_author',
+    footer: embed.footer?.text ?? 'empty_footer',
+    image_url: embed.image?.url ?? 'empty_image'
+  };
 }
+
 
 function msgLogger(msg) {
   const now = new Date();
@@ -119,6 +126,31 @@ function parseFaction(desc) {
   return [teamLogoId, todayBall];
 }
 
+const imageSaveDir = './images'
+
+if (!fs.existsSync(imageSaveDir)) {
+  fs.mkdirSync(imageSaveDir, { recursive: true });
+}
+
+async function downloadAndSaveImage(imageUrl, filename) {
+  try {
+    const response = await axios.get(imageUrl, {
+      responseType: 'arraybuffer'
+    });
+
+    const buffer = Buffer.from(response.data);
+
+    const filepath = path.join(imageSaveDir, filename);
+    fs.writeFileSync(filepath, buffer);
+
+    msgLogger(`✅ Image saved: ${filepath}`);
+    return;
+  } catch (error) {
+    console.error('Error downloading image:', error.message);
+    return;
+  }
+}
+
 module.exports = { 
   messageExtractor,
   msgLogger,
@@ -127,4 +159,5 @@ module.exports = {
   extractWildPokemonInfoByDesc,
   parseBalls,
   parseFaction,
+  downloadAndSaveImage,
 };
